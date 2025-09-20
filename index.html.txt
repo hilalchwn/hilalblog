@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Feyza Hilal Gören | Blog ve İletişim</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: Arial, sans-serif; background: #f7ebef; color: #333; overflow-x: hidden; }
+    a { text-decoration: none; color: inherit; transition: 0.3s; }
+
+    header {
+      background-color: #FBCCD2;
+      color: #333;
+      padding: 15px 20px;
+      text-align: center;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    header h1 { font-size: 1.8em; margin-bottom: 5px; }
+    nav { margin-top: 10px; }
+    nav a { margin: 0 10px; font-weight: bold; }
+    nav a:hover { color: #c12b41; }
+
+    .container { width: 90%; max-width: 900px; margin: 20px auto; }
+
+    section#blog h2 { margin-bottom: 15px; color: #FB8DA1; text-align: center; }
+    .post {
+      background: #fff;
+      padding: 15px 20px;
+      margin-bottom: 20px;
+      border-radius: 5px;
+      border-left: 5px solid #FB8DA1;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      opacity: 0;
+      transform: translateY(20px);
+      transition: 0.6s ease-out;
+    }
+    .post.show { opacity: 1; transform: translateY(0); }
+    .post h3 { color: #FB8DA1; margin-bottom: 8px; }
+    .post p { line-height: 1.6; }
+    .post .date { font-size: 0.9em; color: #999; margin-bottom: 10px; }
+
+    section#iletisim h2 { margin-bottom: 15px; color: #FB8DA1; text-align: center; }
+    .contact-form {
+      background: #fff;
+      padding: 20px;
+      border-radius: 5px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      position: relative;
+    }
+    .contact-form label { display: block; margin-top: 10px; margin-bottom: 5px; font-weight: bold; }
+    .contact-form input, .contact-form textarea {
+      width: 100%;
+      padding: 10px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+      margin-bottom: 10px;
+      font-size: 1em;
+    }
+    .contact-form button {
+      background: #FB8DA1;
+      color: #fff;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 1em;
+      transition: 0.3s;
+    }
+    .contact-form button:hover { background: #e77b91; }
+
+    .thank-you {
+      display: none;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: #fbd9dc;
+      color: #c12b41;
+      padding: 20px;
+      border-radius: 5px;
+      font-weight: bold;
+      text-align: center;
+      width: 80%;
+    }
+
+    footer {
+      background-color: #FBCCD2;
+      color: #333;
+      text-align: center;
+      padding: 15px 10px;
+      margin-top: 20px;
+    }
+
+    @media (max-width: 600px){
+      header h1 { font-size: 1.4em; }
+      nav a { display: block; margin: 5px 0; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Feyza Hilal Gören</h1>
+    <nav>
+      <a href="#blog">Blog</a>
+      <a href="#iletisim">İletişim</a>
+    </nav>
+  </header>
+
+  <div class="container">
+    <section id="blog">
+      <h2>Son Yazılar</h2>
+      <div id="blogPosts"></div>
+    </section>
+
+    <section id="iletisim">
+      <h2>İletişim</h2>
+      <form class="contact-form" id="contactForm" action="https://formspree.io/f/mayvgdwr" method="POST">
+        <label>Ad Soyad</label>
+        <input type="text" name="ad" placeholder="Adınızı yazın" required>
+        <label>Email</label>
+        <input type="email" name="email" placeholder="E-posta adresiniz" required>
+        <label>Mesajınız</label>
+        <textarea name="mesaj" rows="5" placeholder="Mesajınızı yazın..." required></textarea>
+        <button type="submit">Gönder</button>
+        <div class="thank-you" id="thankYouMessage">Mesajınız için teşekkürler! En kısa zamanda size geri döneceğiz.</div>
+      </form>
+    </section>
+  </div>
+
+  <footer>
+    <p>© 2025 Feyza Hilal Gören | Tüm Hakları Saklıdır</p>
+  </footer>
+
+  <script>
+    // Dinamik blog yazıları
+    const blogData = [
+      { "title": "İlk Yazım", "date": "2025-09-20", "content": "Buraya blog yazınızı ekleyebilirsiniz. Eğitim, deneyim veya ilgi alanlarınızı paylaşabilirsiniz." },
+      { "title": "İkinci Yazım", "date": "2025-09-21", "content": "İkinci yazınızı buraya ekleyebilirsiniz. Artık JSON ile yönetmek çok kolay." }
+    ];
+
+    const blogContainer = document.getElementById('blogPosts');
+    blogData.forEach(post => {
+      const postDiv = document.createElement('div');
+      postDiv.classList.add('post');
+      postDiv.innerHTML = `<h3>${post.title}</h3><div class="date">${post.date}</div><p>${post.content}</p>`;
+      blogContainer.appendChild(postDiv);
+    });
+
+    // Blog animasyonu
+    const posts = document.querySelectorAll('.post');
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if(entry.isIntersecting) entry.target.classList.add('show');
+      });
+    }, { threshold: 0.1 });
+    posts.forEach(post => observer.observe(post));
+
+    // Form işleme
+    const form = document.getElementById('contactForm');
+    const thankYou = document.getElementById('thankYouMessage');
+    form.addEventListener('submit', function(e){
+      e.preventDefault();
+      const formData = new FormData(form);
+      fetch(form.action, {
+        method: form.method,
+        body: formData,
+        headers: { 'Accept':'application/json' }
+      })
+      .then(response => {
+        if(response.ok){
+          form.reset();
+          thankYou.style.display = 'block';
+          setTimeout(()=>{ thankYou.style.display='none'; },5000);
+        } else { alert('Form gönderilirken hata oluştu.'); }
+      }).catch(()=>alert('Form gönderilirken hata oluştu.'));
+    });
+  </script>
+</body>
+</html>
